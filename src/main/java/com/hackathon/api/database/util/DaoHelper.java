@@ -17,6 +17,7 @@ public class DaoHelper {
 	private JdbcTemplate jdbcTemplate;
 	
 	private Logger log = LoggerFactory.getLogger(DaoHelper.class);
+	private RowMapper<Integer> singleColumnIntegerMapper = (resultSet, i) -> resultSet.getInt(1);
 	
 	public <T> List<T> executeCallForObjects(String functionName, RowMapper<T> rowMapper, DaoParameter... params) {
 		log.debug("Calling: {}", functionName);
@@ -49,5 +50,18 @@ public class DaoHelper {
 			result[i] = params[i].getType();
 		}
 		return result;
+	}
+	
+	public int executeCallForInt(String functionName, DaoParameter... params) {
+		log.debug("Calling: {}", functionName);
+
+		Object[] args = DaoHelper.buildArgs(params);
+		int[] argTypes = DaoHelper.buildArgsTypes(params);
+		String sql = DaoHelper.buildSql(functionName, params);
+		List<Integer> results = jdbcTemplate.query(sql, args, argTypes, singleColumnIntegerMapper);
+		if (results.isEmpty()) {
+			
+		}
+		return results.get(0);
 	}
 }
