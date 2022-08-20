@@ -26,6 +26,7 @@ import com.hackathon.api.model.SubMatchModel;
 import com.hackathon.api.model.SubSuperLongResult;
 import com.hackathon.api.model.TableMatchColumnSummary;
 import com.hackathon.api.model.TableMatchScoreSummary;
+import com.hackathon.api.model.TableMatchSrcDestSummary;
 import com.hackathon.api.model.TableSummary;
 import com.hackathon.api.repository.DataTableRepository;
 import com.hackathon.api.repository.Dataset1Repository;
@@ -38,7 +39,7 @@ public class ExcelService {
 	private DataTableRepository repository;
 	@Autowired
 	private DataTableImpl dataTableImpl;
-	
+
 	@Autowired
 	private Dataset1Repository datasetRepository;
 	@Autowired
@@ -54,7 +55,7 @@ public class ExcelService {
 			throw new RuntimeException("fail to store excel data: " + e.getMessage());
 		}
 	}
-	
+
 	public void saveDestinationFile(MultipartFile file) {
 		try {
 			List<Dataset2> dataTables = ExcelHelper.excelToDataset2Table(file.getInputStream());
@@ -68,8 +69,6 @@ public class ExcelService {
 	public List<DataTable> getAllDatas() {
 		return repository.findAll();
 	}
-	
-	
 
 	public List<DataTable> getAllDatasUsingFuction() {
 
@@ -140,7 +139,7 @@ public class ExcelService {
 			return dataRecords;
 		}
 	}
-	
+
 	public List<FullMatchModel> getPartialMatchShortResults() {
 		List<FullMatchModel> dataRecords = new ArrayList<>();
 		try {
@@ -155,7 +154,6 @@ public class ExcelService {
 			return dataRecords;
 		}
 	}
-	
 
 	public List<SearchTableModel> searchTableDatas(String tableName) {
 		List<SearchTableModel> dataRecords = new ArrayList<>();
@@ -171,32 +169,30 @@ public class ExcelService {
 			return dataRecords;
 		}
 	}
-	
+
 	public int truncateDataset1Table() {
 		try {
-		return dataTableImpl.truncateDataset1Table();
-		}
-		catch(Exception ex) {
+			return dataTableImpl.truncateDataset1Table();
+		} catch (Exception ex) {
 			logger.error(ex.getLocalizedMessage());
 			return 0;
 		}
 	}
-	
+
 	public int truncateDataset2Table() {
 		try {
 			return dataTableImpl.truncateDataset2Table();
-			}
-			catch(Exception ex) {
-				logger.error(ex.getLocalizedMessage());
-				return 0;
-			}
+		} catch (Exception ex) {
+			logger.error(ex.getLocalizedMessage());
+			return 0;
+		}
 	}
 
 	public int processingDatas() {
 		try {
 			Thread.sleep(5000);
 			return 5;
-			//return dataTableImpl.processingDatas();
+			// return dataTableImpl.processingDatas();
 
 		} catch (Exception ex) {
 			logger.error(ex.getLocalizedMessage());
@@ -264,10 +260,12 @@ public class ExcelService {
 		}
 	}
 
-	public List<TableMatchColumnSummary> getTableMatchColumnSummary(String sourceSchemaName, String sourceTableName,String destinationSchemaName, String destinationTableName) {
+	public List<TableMatchColumnSummary> getTableMatchColumnSummary(String sourceSchemaName, String sourceTableName,
+			String destinationSchemaName, String destinationTableName) {
 		List<TableMatchColumnSummary> dataRecords = new ArrayList<>();
 		try {
-			dataRecords = dataTableImpl.getTableMatchColumnSummary(sourceSchemaName, sourceTableName,destinationSchemaName,destinationTableName);
+			dataRecords = dataTableImpl.getTableMatchColumnSummary(sourceSchemaName, sourceTableName,
+					destinationSchemaName, destinationTableName);
 			if (!CollectionUtils.isEmpty(dataRecords)) {
 				return dataRecords;
 			} else {
@@ -279,10 +277,12 @@ public class ExcelService {
 		}
 	}
 
-	public List<TableMatchScoreSummary> getTableMatchScoreSummary(String sourceSchemaName, String sourceTableName,String destinationSchemaName, String destinationTableName) {
+	public List<TableMatchScoreSummary> getTableMatchScoreSummary(String sourceSchemaName, String sourceTableName,
+			String destinationSchemaName, String destinationTableName) {
 		List<TableMatchScoreSummary> dataRecords = new ArrayList<>();
 		try {
-			dataRecords = dataTableImpl.getTableMatchScoreSummary(sourceSchemaName, sourceTableName,destinationSchemaName,destinationTableName);
+			dataRecords = dataTableImpl.getTableMatchScoreSummary(sourceSchemaName, sourceTableName,
+					destinationSchemaName, destinationTableName);
 			if (!CollectionUtils.isEmpty(dataRecords)) {
 				return dataRecords;
 			} else {
@@ -294,6 +294,68 @@ public class ExcelService {
 		}
 	}
 
-	
+	public List<TableMatchSrcDestSummary> getTableMatchSrcSummary(String sourceSchemaName, String sourceTableName,
+			String destinationSchemaName, String destinationTableName) {
+		List<TableMatchSrcDestSummary> dataRecords = new ArrayList<>();
+		try {
+			dataRecords = dataTableImpl.getTableMatchSrcSummary(sourceSchemaName, sourceTableName,
+					destinationSchemaName, destinationTableName);
+			if (!CollectionUtils.isEmpty(dataRecords)) {
+				return dataRecords;
+			} else {
+				return dataRecords;
+			}
+		} catch (Exception ex) {
+			logger.error(ex.getLocalizedMessage());
+			return dataRecords;
+		}
+	}
+
+	public List<TableMatchSrcDestSummary> getTableMatchDestSummary(String sourceSchemaName, String sourceTableName,
+			String destinationSchemaName, String destinationTableName) {
+		List<TableMatchSrcDestSummary> dataRecords = new ArrayList<>();
+		try {
+			dataRecords = dataTableImpl.getTableMatchDestSummary(sourceSchemaName, sourceTableName,
+					destinationSchemaName, destinationTableName);
+			if (!CollectionUtils.isEmpty(dataRecords)) {
+				return dataRecords;
+			} else {
+				return dataRecords;
+			}
+		} catch (Exception ex) {
+			logger.error(ex.getLocalizedMessage());
+			return dataRecords;
+		}
+	}
+
+	public int copyDataSrcToDest() {
+		try {
+			return dataTableImpl.copyDataFromSOurceToDestination();
+
+		} catch (Exception ex) {
+			logger.error(ex.getLocalizedMessage());
+			return 0;
+		}
+	}
+
+	public int existingTableCopyToDest(String schemaName, String tableName) {
+		try {
+			return dataTableImpl.existingTableCopyToDest(schemaName,tableName);
+		} catch (Exception ex) {
+			logger.error(ex.getLocalizedMessage());
+			return 0;
+		}
+	}
+
+	public int tableStructCopyToDest(String schemaName, String tableName,String columnNames) {
+		try {
+			return dataTableImpl.tableStructCopyToTest(schemaName,tableName,columnNames);
+
+		} catch (Exception ex) {
+			logger.error(ex.getLocalizedMessage());
+			return 0;
+		}
+	}
+
 
 }

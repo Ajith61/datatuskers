@@ -11,6 +11,7 @@ import com.hackathon.api.model.SubMatchModel;
 import com.hackathon.api.model.SubSuperLongResult;
 import com.hackathon.api.model.TableMatchColumnSummary;
 import com.hackathon.api.model.TableMatchScoreSummary;
+import com.hackathon.api.model.TableMatchSrcDestSummary;
 import com.hackathon.api.model.TableSummary;
 
 public interface DataDao {
@@ -37,6 +38,16 @@ public interface DataDao {
 	
 	List<TableSummary> getTableSummaryResults(String schemaName,String tableName);
 	
+	
+	
+	// Copy From Source To Destination
+	
+	int copyDataFromSOurceToDestination();
+	
+	int existingTableCopyToDest(String sourceSchemaName, String sourceTableName);
+	
+	int tableStructCopyToTest(String sourceSchemaName, String sourceTableName,String columnNames);
+	
 	// Full Match Long Results
 	
 	List<FullMatchLongModel> getFullMatchLongResult(String schemaName,String tableName);
@@ -51,4 +62,8 @@ public interface DataDao {
 	List<TableMatchColumnSummary> getTableMatchColumnSummary(String sourceSchemaName, String sourceTableName,String destinationSchemaName, String destinationTableName);
 	
 	List<TableMatchScoreSummary> getTableMatchScoreSummary(String sourceSchemaName, String sourceTableName,String destinationSchemaName, String destinationTableName);
+	
+    List<TableMatchSrcDestSummary> getTableMatchSrcSummary(String sourceSchemaName, String sourceTableName,String destinationSchemaName, String destinationTableName);
+	
+	List<TableMatchSrcDestSummary> getTableMatchDestSummary(String sourceSchemaName, String sourceTableName,String destinationSchemaName, String destinationTableName);
 }

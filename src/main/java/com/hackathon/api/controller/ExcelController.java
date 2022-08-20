@@ -31,6 +31,7 @@ import com.hackathon.api.model.SubMatchModel;
 import com.hackathon.api.model.SubSuperLongResult;
 import com.hackathon.api.model.TableMatchColumnSummary;
 import com.hackathon.api.model.TableMatchScoreSummary;
+import com.hackathon.api.model.TableMatchSrcDestSummary;
 import com.hackathon.api.model.TableSummary;
 import com.hackathon.api.service.ExcelService;
 
@@ -229,6 +230,40 @@ public class ExcelController {
 			@RequestParam("sourceTableName") String sourceTableName,@RequestParam("destinationSchemaName") String destinationSchemaName,
 			@RequestParam("destinationTableName") String destinationTableName) {
 		List<TableMatchScoreSummary> datas = fileService.getTableMatchScoreSummary(sourceSchemaName, sourceTableName,destinationSchemaName,destinationTableName);
+		return datas;
+	}
+	
+	@GetMapping("/get/getTableMatchSrcSummary")
+	public List<TableMatchSrcDestSummary> getTableMatchSrcSummary(@RequestParam("sourceSchemaName") String sourceSchemaName,
+			@RequestParam("sourceTableName") String sourceTableName,@RequestParam("destinationSchemaName") String destinationSchemaName,
+			@RequestParam("destinationTableName") String destinationTableName) {
+		List<TableMatchSrcDestSummary> datas = fileService.getTableMatchSrcSummary(sourceSchemaName, sourceTableName,destinationSchemaName,destinationTableName);
+		return datas;
+	}
+	
+	@GetMapping("/get/getTableMatchDestSummary")
+	public List<TableMatchSrcDestSummary> getTableMatchDestSummary(@RequestParam("sourceSchemaName") String sourceSchemaName,
+			@RequestParam("sourceTableName") String sourceTableName,@RequestParam("destinationSchemaName") String destinationSchemaName,
+			@RequestParam("destinationTableName") String destinationTableName) {
+		List<TableMatchSrcDestSummary> datas = fileService.getTableMatchDestSummary(sourceSchemaName, sourceTableName,destinationSchemaName,destinationTableName);
+		return datas;
+	}
+	
+	@GetMapping("/get/copySrcToDesc")
+	public int copyDataFromSourceToDestination() {
+		int datas = fileService.copyDataSrcToDest();
+		return datas;
+	}
+	
+	@GetMapping("/get/existingTableCopyToDest")
+	public int existingTableCopyToDest(@RequestParam("schemaName") String schemaName,@RequestParam("tableName") String tableName) {
+		int datas = fileService.existingTableCopyToDest(schemaName,tableName);
+		return datas;
+	}
+	
+	@GetMapping("/get/tableStructCopyToDest")
+	public int tableStructCopyToDest(@RequestParam("schemaName") String schemaName,@RequestParam("tableName") String tableName,@RequestParam("columnNames") String columnNames) {
+		int datas = fileService.tableStructCopyToDest(schemaName,tableName,columnNames);
 		return datas;
 	}
 

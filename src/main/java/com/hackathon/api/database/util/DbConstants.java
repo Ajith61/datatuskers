@@ -27,4 +27,9 @@ public class DbConstants {
 	public final static String GET_FULL_MATCH_SHORT_DATA = "full_match_short_result";
 	public final static String GET_SUB_MATCH_SHORT_DATA = "sub_super_short_result";
 	public final static String GET_PARTIAL_MATCH_SHORT_DATA = "partial_match_short_result";
+	
+// Functions - COPY FROM SOURCE TO DESTINATION
+	public final static String COPY_SOURCE_TO_DESTINATION = "copy_src_to_dest";
+	public final static String EXISTING_TABLE_COPY_TO_DEST = "existing_table_copy_to_dest";
+	public final static String TABLE_STRUCT_COPY_TO_DEST = "table_struct_copy_to_dest";
 }
